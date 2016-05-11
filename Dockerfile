@@ -7,7 +7,7 @@ ENV LANG en_US.UTF-8
 RUN echo "export PS1='\e[1;31m\]\u@\h:\w\\$\[\e[0m\] '" >> /root/.bashrc
 
 #Runit
-RUN apt -y update
+#RUN apt -y update
 RUN apt-get install -y runit 
 CMD export > /etc/envvars && /usr/sbin/runsvdir-start
 RUN echo 'export > /etc/envvars' >> /root/.bashrc
@@ -27,7 +27,9 @@ RUN wget -O /usr/local/bin/confd  https://github.com/kelseyhightower/confd/relea
     chmod +x /usr/local/bin/confd
 
 #Docker client only
-RUN wget -O /usr/local/bin/docker https://get.docker.io/builds/Linux/x86_64/docker-latest && \
+RUN curl -sSL -O https://get.docker.com/builds/Linux/x86_64/docker-1.11.1.tgz && sudo tar zxf docker-1.11.1.tgz -C / && \
+    mv docker/docker /usr/local/bin && \
+    rm -rf /docker && \
     chmod +x /usr/local/bin/docker
 
 #Kubernetes
